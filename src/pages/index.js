@@ -5,6 +5,8 @@ import {
   materialCells,
 } from "@jsonforms/material-renderers";
 import { JsonForms } from "@jsonforms/react";
+import SignatureField from "@/components/SignatureField";
+import { signatureFieldTester } from "@/components/signatureFieldTester";
 
 export default function Home() {
   const [formFields, setFormFields] = useState([]);
@@ -17,6 +19,11 @@ export default function Home() {
   useEffect(() => {
     fetchForms();
   }, []);
+
+  const renderers = [
+    ...materialRenderers,
+    { tester: () => true, renderer: SignatureField },
+  ];
 
   const fetchForms = async () => {
     setLoading(true);
@@ -51,7 +58,7 @@ export default function Home() {
             schema={schema}
             uischema={uischema}
             data={data}
-            renderers={materialRenderers}
+            renderers={renderers}
             cells={materialCells}
             onChange={({ data, _errors }) => setData(data)}
           />
